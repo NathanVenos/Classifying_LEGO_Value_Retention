@@ -140,6 +140,8 @@ def get_set_data(set_url):
         'store_price': None,
         'current_price': None,
         'packaging': None,
+        'dimensions': None,
+        'weight': None,
         'notes': None,
         'rating_value': None,
         'rating_votes': None,
@@ -222,6 +224,12 @@ def get_set_data(set_url):
         elif field_name == 'Packaging':
             set_dx['packaging'] = field_value_sp.text
 
+        elif field_name == 'Dimensions':
+            set_dx['dimensions'] = field_value_sp.text
+
+        elif field_name == 'Weight':
+            set_dx['weight'] = field_value_sp.text
+
         elif field_name == 'Notes':
             set_dx['notes'] = field_value_sp.text
 
@@ -237,6 +245,34 @@ def get_set_data(set_url):
                 print(f'rating error: {field_value_sp.text}')
 
     return set_dx
+
+
+# clean and aggregate the dimension field
+def clean_dimension(dimension_tx):
+    # skip when string field doesn't have a value
+    if isinstance(dimension_tx, float):
+        return np.nan
+
+    dim_units = dimension_tx.split('cm')
+    dim_ls = dim_units[0].split('x')
+
+    d1 = float(dim_ls[0].strip())
+    d2 = float(dim_ls[1].strip())
+    d3 = float(dim_ls[2].strip())
+
+    return d1 * d2 * d3
+
+
+# clean the weight field
+def clean_weight(weight_tx):
+    # skip when string field doesn't have a value
+    if isinstance(weight_tx, float):
+        return np.nan
+
+    weight_units = weight_tx.split('Kg')
+    weight = float(weight_units[0].strip())
+
+    return weight
 
 
 # clean the store-price so it is a float in dollars
