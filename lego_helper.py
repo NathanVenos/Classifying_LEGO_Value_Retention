@@ -368,15 +368,74 @@ def get_main_tag(tag_ls):
     return None
 
 
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 GENERAL FUNCTIONS
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
+# create categeory based on group and theme
+def get_category(row):
+
+    group = row['theme_group']
+    theme = row['theme']
+
+    if group == 'Modern day':
+        if theme in ['Boats', 'Studios', 'Town']:
+            return 'Modern-Town'
+
+        if theme in ['City', 'Discovery', 'World City']:
+            return 'Modern-City'
+
+    if group == 'Licensed':
+        if theme == 'Star Wars':
+            return 'Licensed-StarWars'
+
+        if theme in ['Harry Potter', 'Jurassic World', 'Indiana Jones', 'The Lone Ranger',
+                    'The Hobbit', 'The Lord of the Rings', 'Pirates of the Caribbean', 'Prince of Persia',  
+                    'Cars', 'Toy Story', 'The LEGO Movie', 'Ghostbusters']:
+            return 'Licensed-Movie'
+
+        if theme in ['Marvel Super Heroes', 'Spider-Man', 
+                    'Batman', 'DC Comics Super Heroes', 'The LEGO Batman Movie',  'DC Super Hero Girls', 
+                    'Disney',  'SpongeBob SquarePants', 'Teenage Mutant Ninja Turtles', 'Avatar The Last Airbender', 
+                    'Minecraft', 'BrickHeadz', 'Speed Champions', 'Mixels', 'The Angry Birds Movie', 
+                    'The Simpsons', 'Scooby-Doo']:
+            return 'Licensed-Other'
+
+    if group == 'Action/Adventure':
+        if theme == 'Space':
+            return 'Space'
+
+        else:
+            return 'Lego-Brand'
+
+    if group == 'Model making' or (group == 'Modern day' and theme == 'Trains'):
+        return 'Advanced-models'
+
+    if group == 'Historical':
+        return 'Historical'
+
+    if group == 'Constraction':
+        return 'Constraction'
+
+    if group == 'Technical':
+        return 'Technical'
+
+    if group == 'Racing' or (group == 'Modern day' and theme == 'Sports'):
+        return 'Sports'
+
+    if group == 'Girls':
+        return 'Bigfig-Girls'
+
+    if group == 'Junior':
+        return 'Bigfig-Junior'
+
+    return 'None'
+
+
+
 # map themes to category 
-def get_category(theme):
+def get_category_by_theme(theme):
 
     if theme in ['Town', 'Studios', 'Island Xtreme Stunts']:
         return 'Town'
