@@ -24,35 +24,37 @@ using :ref:`grid_search`.
 
 """
 
-print(__doc__)
+#print(__doc__)
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-from sklearn import svm, datasets
-from sklearn.model_selection import train_test_split
+#from sklearn import svm, datasets
+#from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.utils.multiclass import unique_labels
 
 # import some data to play with
-iris = datasets.load_iris()
-X = iris.data
-y = iris.target
-class_names = iris.target_names
+# iris = datasets.load_iris()
+# X = iris.data
+# y = iris.target
+# class_names = iris.target_names
 
 # Split the data into a training set and a test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
 # Run classifier, using a model that is too regularized (C too low) to see
 # the impact on the results
-classifier = svm.SVC(kernel='linear', C=0.01)
-y_pred = classifier.fit(X_train, y_train).predict(X_test)
+# classifier = svm.SVC(kernel='linear', C=0.01)
+# y_pred = classifier.fit(X_train, y_train).predict(X_test)
 
 
 def plot_confusion_matrix(y_true, y_pred, classes,
                           normalize=False,
                           title=None,
-                          cmap=plt.cm.Blues):
+                          cmap=plt.cm.Blues,
+                          figure=None,
+                          axis=None):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
@@ -69,13 +71,17 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     classes = classes[unique_labels(y_true, y_pred)]
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-        print("Normalized confusion matrix")
+        #print("Normalized confusion matrix")
+    #else:
+        #print('Confusion matrix, without normalization')
+
+    # print(cm)
+    if (figure==None)*(axis==None):
+        fig, ax = plt.subplots()
+    elif (figure==None)+(axis==None):
+        print('Pass both fig and ax or neither')
     else:
-        print('Confusion matrix, without normalization')
-
-    print(cm)
-
-    fig, ax = plt.subplots()
+        fig, ax = figure, axis
     im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
     ax.figure.colorbar(im, ax=ax)
     # We want to show all ticks...
@@ -103,14 +109,14 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     return ax
 
 
-np.set_printoptions(precision=2)
+# np.set_printoptions(precision=2)
 
 # Plot non-normalized confusion matrix
-plot_confusion_matrix(y_test, y_pred, classes=class_names,
-                      title='Confusion matrix, without normalization')
+# plot_confusion_matrix(y_test, y_pred, classes=class_names,
+#                      title='Confusion matrix, without normalization')
 
 # Plot normalized confusion matrix
-plot_confusion_matrix(y_test, y_pred, classes=class_names, normalize=True,
-                      title='Normalized confusion matrix')
+# plot_confusion_matrix(y_test, y_pred, classes=class_names, normalize=True,
+#                      title='Normalized confusion matrix')
 
-plt.show()
+# plt.show()
