@@ -532,7 +532,30 @@ def get_aftermarket(set_rw):
 
     return used - store
 
+def inflation_adjustment_loop(inflation_tuple):
+    """
+    Helper function used by inflation_adjusted_value() below.
+    Returns an inflation adjusted value based on tuple generated in
+    inflation_adjusted_value().
+    For use in a lambda function.
+    """
+    value = inflation_tuple[0]
+    for index in range(0, inflation_tuple[1]):
+        value *= 1.0263
+    return round(value,2)
 
+def inflation_adjusted_value(dataframe, price_column, year_column):
+    """
+    Returns inflation adjusted value in 2019 dollars.
+    Per https://smartasset.com/investing/inflation-calculator, 
+    the average rate of inflation between 1984 and 2019 is 2.63%
+    """
+    temp_df = dataframe.copy()
+    temp_df["temp_tup"] = list(zip(temp_df[price_column],
+                                   2019-temp_df[year_column]))
+    temp_df["temp_price"] = temp_df["temp_tup"].apply(lambda x:
+                                                      inflation_adjustment_loop(x))
+    return temp_df["temp_price"]
 
 
 
